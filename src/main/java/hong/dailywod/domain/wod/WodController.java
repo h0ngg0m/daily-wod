@@ -3,9 +3,12 @@ package hong.dailywod.domain.wod;
 import java.time.LocalDate;
 import java.util.List;
 
+import hong.dailywod.global.response.ApiResult;
+import hong.dailywod.global.response.ResponseFactory;
 import jakarta.validation.Valid;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import hong.dailywod.domain.wod.dto.WodCreateDto;
@@ -21,30 +24,30 @@ public class WodController {
     private final WodService wodService;
 
     @GetMapping("/today")
-    public WodResponseDto getWod() {
-        return wodService.getWod();
+    public ResponseEntity<ApiResult<WodResponseDto>> getWod() {
+        return ResponseFactory.ok(wodService.getWod());
     }
 
     // TODO: 관리자만 사용?
     @GetMapping("/{id}")
-    public WodResponseDto getWodById(@PathVariable Long id) {
-        return wodService.getWodById(id);
+    public ResponseEntity<ApiResult<WodResponseDto>> getWodById(@PathVariable("id") Long id) {
+        return ResponseFactory.ok(wodService.getWodById(id));
     }
 
     // TODO: 관리자만 사용 가능하도록 권한 설정
     @GetMapping("")
-    public List<WodResponseDto> getWodsByDateBetween(
+    public ResponseEntity<ApiResult<List<WodResponseDto>>> getWodsByDateBetween(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                    LocalDate startDate,
+            LocalDate startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                    LocalDate endDate) {
-        return wodService.getWodsByDateBetween(startDate, endDate);
+            LocalDate endDate) {
+        return ResponseFactory.ok(wodService.getWodsByDateBetween(startDate, endDate));
     }
 
     // TODO: 관리자만 사용 가능하도록 권한 설정
     @PostMapping("")
-    public WodResponseDto createWod(@Valid @RequestBody WodCreateDto wodCreateDto) {
-        return wodService.createWod(wodCreateDto);
+    public ResponseEntity<ApiResult<WodResponseDto>> createWod(@Valid @RequestBody WodCreateDto dto) {
+        return ResponseFactory.ok(wodService.createWod(dto));
     }
 
     // 사용자용 와드 기록 조회 api (날짜로)

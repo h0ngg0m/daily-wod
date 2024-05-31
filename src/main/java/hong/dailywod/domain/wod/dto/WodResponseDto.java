@@ -5,9 +5,12 @@ import java.time.LocalDateTime;
 
 import hong.dailywod.domain.wod.model.Wod;
 import hong.dailywod.domain.wod.model.WodType;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WodResponseDto {
 
     private Long id;
