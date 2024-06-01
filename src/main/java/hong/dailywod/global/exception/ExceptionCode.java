@@ -9,6 +9,7 @@ public enum ExceptionCode {
     SUCCESS("S000", "성공"),
 
     SYSTEM_ERROR("E000", "시스템 에러"),
+    SYSTEM_ERROR_DAILY_WOD_NOT_FOUND("E001", "Daily WOD를 찾을 수 없음"),
 
     FAIL_INVALID_PARAMETER("F001", "올바르지 않은 파라미터"),
     FAIL_INVALID_REQUEST("F002", "올바르지 않은 요청"),

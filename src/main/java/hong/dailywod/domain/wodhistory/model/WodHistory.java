@@ -23,6 +23,10 @@ public class WodHistory {
     @JoinColumn(name = "wod_id")
     private Wod wod;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "custom_wod_id")
+//    private CustomWod customwod;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

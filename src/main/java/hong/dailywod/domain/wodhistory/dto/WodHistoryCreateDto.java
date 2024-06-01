@@ -15,7 +15,9 @@ public class WodHistoryCreateDto {
 
     @NotBlank private String record;
 
-    @NotNull private Long wodId;
+    private Long wodId;
+
+    private Long customWodId;
 
     @NotNull private Long userId;
 }

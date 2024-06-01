@@ -3,6 +3,7 @@ package hong.dailywod.domain.wod;
 import java.time.LocalDate;
 import java.util.List;
 
+import hong.dailywod.domain.wod.dto.DailyWodResponseDto;
 import hong.dailywod.global.response.ApiResult;
 import hong.dailywod.global.response.ResponseFactory;
 import jakarta.validation.Valid;
@@ -23,9 +24,9 @@ public class WodController {
 
     private final WodService wodService;
 
-    @GetMapping("/today")
-    public ResponseEntity<ApiResult<WodResponseDto>> getWod() {
-        return ResponseFactory.ok(wodService.getWod());
+    @GetMapping("/daily")
+    public ResponseEntity<ApiResult<DailyWodResponseDto>> getDailyWod() {
+        return ResponseFactory.ok(wodService.getDailyWod());
     }
 
     // TODO: 관리자만 사용?

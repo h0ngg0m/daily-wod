@@ -6,6 +6,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.time.LocalDate;
 import java.util.List;
 
+import hong.dailywod.domain.wod.dto.DailyWodResponseDto;
+import hong.dailywod.global.exception.ClientBadRequestException;
+import hong.dailywod.global.exception.SystemException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -63,8 +66,8 @@ class WodServiceImplTest {
                 new WodCreateDto(
                         "Another Title...", "WOD...", WodType.METCON, LocalDate.of(2021, 8, 12));
         assertThatThrownBy(() -> wodService.createWod(sameTypeAndSameDateWod))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미 해당 날짜에 해당 타입의 WOD가 존재합니다.");
+                .isInstanceOf(ClientBadRequestException.class)
+                .hasMessage("이미 존재하는 WOD입니다. / WOD 날짜: 2021-08-12, WOD 타입: METCON");
     }
 
     @Test
@@ -103,5 +106,51 @@ class WodServiceImplTest {
 
         // then
         assertThat(wods).hasSize(3);
+    }
+
+    @Test
+    void 데일리_와드를_조회할_수_있다() {
+        // given
+        wodRepository.persist(
+                new Wod(
+                        "METCON WOD",
+                        "5 Rounds for time: 10 Pull-ups, 20 Push-ups, 30 Air Squats",
+                        WodType.METCON,
+                        LocalDate.now()));
+        wodRepository.persist(
+                new Wod(
+                        "CARDIO WOD",
+                        "Run 5km",
+                        WodType.CARDIO,
+                        LocalDate.now()));
+
+        // when
+        DailyWodResponseDto dailyWod = wodService.getDailyWod();
+        WodResponseDto metcon = dailyWod.getMetcon();
+        WodResponseDto cardio = dailyWod.getCardio();
+
+
+        // then
+        assertThat(metcon.getTitle()).isEqualTo("METCON WOD");
+        assertThat(metcon.getContent()).isEqualTo("5 Rounds for time: 10 Pull-ups, 20 Push-ups, 30 Air Squats");
+        assertThat(metcon.getType()).isEqualTo(WodType.METCON);
+        assertThat(metcon.getWodDate()).isEqualTo(LocalDate.now());
+        assertThat(metcon.getCreatedDate()).isNotNull();
+        assertThat(metcon.getUpdatedDate()).isNotNull();
+
+        assertThat(cardio.getTitle()).isEqualTo("CARDIO WOD");
+        assertThat(cardio.getContent()).isEqualTo("Run 5km");
+        assertThat(cardio.getType()).isEqualTo(WodType.CARDIO);
+        assertThat(cardio.getWodDate()).isEqualTo(LocalDate.now());
+        assertThat(cardio.getCreatedDate()).isNotNull();
+        assertThat(cardio.getUpdatedDate()).isNotNull();
+    }
+
+    @Test
+    void 데일리_와드가_존재하지_않으면_시스템_에러를_발생시킨다() {
+        // when, then
+        assertThatThrownBy(() -> wodService.getDailyWod())
+                .isInstanceOf(SystemException.class)
+                .hasMessage("오늘 날짜의 METCON WOD가 존재하지 않습니다. / WOD 날짜: " + LocalDate.now());
     }
 }
