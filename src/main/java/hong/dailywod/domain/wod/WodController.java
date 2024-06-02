@@ -3,18 +3,18 @@ package hong.dailywod.domain.wod;
 import java.time.LocalDate;
 import java.util.List;
 
-import hong.dailywod.domain.wod.dto.DailyWodResponseDto;
-import hong.dailywod.global.response.ApiResult;
-import hong.dailywod.global.response.ResponseFactory;
 import jakarta.validation.Valid;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import hong.dailywod.domain.wod.dto.DailyWodResponseDto;
 import hong.dailywod.domain.wod.dto.WodCreateDto;
 import hong.dailywod.domain.wod.dto.WodResponseDto;
 import hong.dailywod.domain.wod.service.WodService;
+import hong.dailywod.global.response.ApiResult;
+import hong.dailywod.global.response.ResponseFactory;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -39,15 +39,16 @@ public class WodController {
     @GetMapping("")
     public ResponseEntity<ApiResult<List<WodResponseDto>>> getWodsByDateBetween(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate startDate,
+                    LocalDate startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate endDate) {
+                    LocalDate endDate) {
         return ResponseFactory.ok(wodService.getWodsByDateBetween(startDate, endDate));
     }
 
     // TODO: 관리자만 사용 가능하도록 권한 설정
     @PostMapping("")
-    public ResponseEntity<ApiResult<WodResponseDto>> createWod(@Valid @RequestBody WodCreateDto dto) {
+    public ResponseEntity<ApiResult<WodResponseDto>> createWod(
+            @Valid @RequestBody WodCreateDto dto) {
         return ResponseFactory.ok(wodService.createWod(dto));
     }
 

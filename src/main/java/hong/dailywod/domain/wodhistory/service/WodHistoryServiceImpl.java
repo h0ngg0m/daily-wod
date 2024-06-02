@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import hong.dailywod.domain.user.model.User;
 import hong.dailywod.domain.user.repository.UserRepository;
+import hong.dailywod.domain.wod.model.Wod;
 import hong.dailywod.domain.wod.repository.WodRepository;
 import hong.dailywod.domain.wodhistory.dto.WodHistoryCreateDto;
 import hong.dailywod.domain.wodhistory.dto.WodHistoryResponseDto;
@@ -27,12 +28,21 @@ public class WodHistoryServiceImpl implements WodHistoryService {
         User user =
                 userRepository
                         .findById(dto.getUserId())
-                        .orElseThrow(() -> new ClientBadRequestException(ExceptionCode.SUCCESS));
+                        .orElseThrow(
+                                () ->
+                                        new ClientBadRequestException(
+                                                ExceptionCode.FAIL_NOT_FOUND_DATA,
+                                                "존재하지 않는 User입니다. / ID: " + dto.getUserId()));
 
-        //        Wod wod = wodRepository.findById(dto.getWodId())
-        //                .orElseThrow(() -> new EntityNotFoundException("Invalid WOD ID: " +
-        // dto.getWodId()));
+        Wod wod =
+                wodRepository
+                        .findById(dto.getWodId())
+                        .orElseThrow(
+                                () ->
+                                        new ClientBadRequestException(
+                                                ExceptionCode.FAIL_NOT_FOUND_DATA,
+                                                "존재하지 않는 WOD입니다. / ID: " + dto.getWodId()));
 
-        return null;
+        return new WodHistoryResponseDto(wodHistoryRepository.persist(dto.toEntity(user, wod)));
     }
 }

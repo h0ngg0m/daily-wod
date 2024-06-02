@@ -6,19 +6,19 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.time.LocalDate;
 import java.util.List;
 
-import hong.dailywod.domain.wod.dto.DailyWodResponseDto;
-import hong.dailywod.global.exception.ClientBadRequestException;
-import hong.dailywod.global.exception.SystemException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import hong.dailywod.domain.wod.dto.DailyWodResponseDto;
 import hong.dailywod.domain.wod.dto.WodCreateDto;
 import hong.dailywod.domain.wod.dto.WodResponseDto;
 import hong.dailywod.domain.wod.model.Wod;
 import hong.dailywod.domain.wod.model.WodType;
 import hong.dailywod.domain.wod.repository.WodRepository;
+import hong.dailywod.global.exception.ClientBadRequestException;
+import hong.dailywod.global.exception.SystemException;
 
 @SpringBootTest
 @Transactional
@@ -117,22 +117,17 @@ class WodServiceImplTest {
                         "5 Rounds for time: 10 Pull-ups, 20 Push-ups, 30 Air Squats",
                         WodType.METCON,
                         LocalDate.now()));
-        wodRepository.persist(
-                new Wod(
-                        "CARDIO WOD",
-                        "Run 5km",
-                        WodType.CARDIO,
-                        LocalDate.now()));
+        wodRepository.persist(new Wod("CARDIO WOD", "Run 5km", WodType.CARDIO, LocalDate.now()));
 
         // when
         DailyWodResponseDto dailyWod = wodService.getDailyWod();
         WodResponseDto metcon = dailyWod.getMetcon();
         WodResponseDto cardio = dailyWod.getCardio();
 
-
         // then
         assertThat(metcon.getTitle()).isEqualTo("METCON WOD");
-        assertThat(metcon.getContent()).isEqualTo("5 Rounds for time: 10 Pull-ups, 20 Push-ups, 30 Air Squats");
+        assertThat(metcon.getContent())
+                .isEqualTo("5 Rounds for time: 10 Pull-ups, 20 Push-ups, 30 Air Squats");
         assertThat(metcon.getType()).isEqualTo(WodType.METCON);
         assertThat(metcon.getWodDate()).isEqualTo(LocalDate.now());
         assertThat(metcon.getCreatedDate()).isNotNull();

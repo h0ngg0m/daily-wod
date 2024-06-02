@@ -3,17 +3,17 @@ package hong.dailywod.domain.wod.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import hong.dailywod.domain.wod.dto.DailyWodResponseDto;
-import hong.dailywod.domain.wod.model.WodType;
-import hong.dailywod.global.exception.SystemException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import hong.dailywod.domain.wod.dto.DailyWodResponseDto;
 import hong.dailywod.domain.wod.dto.WodCreateDto;
 import hong.dailywod.domain.wod.dto.WodResponseDto;
+import hong.dailywod.domain.wod.model.WodType;
 import hong.dailywod.domain.wod.repository.WodRepository;
 import hong.dailywod.global.exception.ClientBadRequestException;
 import hong.dailywod.global.exception.ExceptionCode;
+import hong.dailywod.global.exception.SystemException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,17 +26,27 @@ public class WodServiceImpl implements WodService {
     @Override
     @Transactional(readOnly = true)
     public DailyWodResponseDto getDailyWod() {
-        WodResponseDto metcon = wodRepository.findByWodDateAndType(LocalDate.now(), WodType.METCON).map(WodResponseDto::new).orElseThrow(
-                () ->
-                        new SystemException(
-                                ExceptionCode.SYSTEM_ERROR_DAILY_WOD_NOT_FOUND,
-                                "오늘 날짜의 METCON WOD가 존재하지 않습니다. / WOD 날짜: " + LocalDate.now()));
+        WodResponseDto metcon =
+                wodRepository
+                        .findByWodDateAndType(LocalDate.now(), WodType.METCON)
+                        .map(WodResponseDto::new)
+                        .orElseThrow(
+                                () ->
+                                        new SystemException(
+                                                ExceptionCode.SYSTEM_ERROR_DAILY_WOD_NOT_FOUND,
+                                                "오늘 날짜의 METCON WOD가 존재하지 않습니다. / WOD 날짜: "
+                                                        + LocalDate.now()));
 
-        WodResponseDto cardio = wodRepository.findByWodDateAndType(LocalDate.now(), WodType.CARDIO).map(WodResponseDto::new).orElseThrow(
-                () ->
-                        new SystemException(
-                                ExceptionCode.SYSTEM_ERROR_DAILY_WOD_NOT_FOUND,
-                                "오늘 날짜의 CARDIO WOD가 존재하지 않습니다. / WOD 날짜: " + LocalDate.now()));
+        WodResponseDto cardio =
+                wodRepository
+                        .findByWodDateAndType(LocalDate.now(), WodType.CARDIO)
+                        .map(WodResponseDto::new)
+                        .orElseThrow(
+                                () ->
+                                        new SystemException(
+                                                ExceptionCode.SYSTEM_ERROR_DAILY_WOD_NOT_FOUND,
+                                                "오늘 날짜의 CARDIO WOD가 존재하지 않습니다. / WOD 날짜: "
+                                                        + LocalDate.now()));
 
         return new DailyWodResponseDto(metcon, cardio);
     }

@@ -8,11 +8,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepositoryCustom {
 
-    private final EntityManager eiEntityManager;
+    private final EntityManager entityManager;
 
     @Override
     public User persist(User user) {
-        eiEntityManager.persist(user);
+        entityManager.persist(user);
         return user;
     }
 }

@@ -15,5 +15,4 @@ public class DailyWodResponseDto {
         this.metcon = metcon;
         this.cardio = cardio;
     }
-
 }
