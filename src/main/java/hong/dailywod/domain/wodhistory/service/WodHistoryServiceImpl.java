@@ -1,5 +1,8 @@
 package hong.dailywod.domain.wodhistory.service;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,5 +47,24 @@ public class WodHistoryServiceImpl implements WodHistoryService {
                                                 "존재하지 않는 WOD입니다. / ID: " + dto.getWodId()));
 
         return new WodHistoryResponseDto(wodHistoryRepository.persist(dto.toEntity(user, wod)));
+    }
+
+    @Override
+    public List<WodHistoryResponseDto> getWodHistoriesByDateBetweenAndUserId(
+            LocalDate startDate, LocalDate endDate, Long userId) {
+        // TODO: 요청한 유저와 파라미터로 받은 userId가 같은지 확인
+        userRepository
+                .findById(userId)
+                .orElseThrow(
+                        () ->
+                                new ClientBadRequestException(
+                                        ExceptionCode.FAIL_NOT_FOUND_DATA,
+                                        "존재하지 않는 User입니다. / ID: " + userId));
+
+        return wodHistoryRepository
+                .findAllByWodDateBetweenAndUserId(startDate, endDate, userId)
+                .stream()
+                .map(WodHistoryResponseDto::new)
+                .toList();
     }
 }

@@ -3,6 +3,7 @@ package hong.dailywod.domain.wodhistory.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,17 @@ import hong.dailywod.domain.wodhistory.repository.WodHistoryRepository;
 @Transactional
 class WodHistoryServiceImplTest {
 
-    @Autowired WodHistoryService wodHistoryService;
+    @Autowired
+    WodHistoryService wodHistoryService;
 
-    @Autowired WodHistoryRepository wodHistoryRepository;
+    @Autowired
+    WodHistoryRepository wodHistoryRepository;
 
-    @Autowired WodRepository wodRepository;
+    @Autowired
+    WodRepository wodRepository;
 
-    @Autowired UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Test
     void 와드_기록을_작성할_수_있다() {
@@ -59,5 +64,40 @@ class WodHistoryServiceImplTest {
 
         assertThat(wodHistory.getUser().getId()).isEqualTo(savedUser.getId());
         assertThat(wodHistory.getWod().getId()).isEqualTo(savedWod.getId());
+    }
+
+    @Test
+    void 와드_기록들을_조회할_수_있다() {
+        // given
+        User savedUser = userRepository.persist(new User("hong"));
+        Wod savedWod1 =
+                wodRepository.persist(
+                        new Wod(
+                                "Metcon",
+                                "Metcon WOD",
+                                WodType.METCON,
+                                LocalDate.now()));
+
+        User otherUser = userRepository.persist(new User("other"));
+        Wod savedWod2 =
+                wodRepository.persist(
+                        new Wod(
+                                "Cardio",
+                                "Cardio WOD",
+                                WodType.CARDIO,
+                                LocalDate.now()));
+
+        wodHistoryRepository.persist(new WodHistory("기록1", savedWod1, savedUser));
+        wodHistoryRepository.persist(new WodHistory("기록2", savedWod2, otherUser));
+
+        // when
+        List<WodHistoryResponseDto> responseDtoList =
+                wodHistoryService.getWodHistoriesByDateBetweenAndUserId(LocalDate.now().minusDays(1), LocalDate.now().plusDays(1), savedUser.getId());
+
+        // then
+        assertThat(responseDtoList.size()).isEqualTo(1);
+        assertThat(responseDtoList.get(0).getRecord()).isEqualTo("기록1");
+        assertThat(responseDtoList.get(0).getWod().getId()).isEqualTo(savedWod1.getId());
+        assertThat(responseDtoList.get(0).getUser().getId()).isEqualTo(savedUser.getId());
     }
 }
