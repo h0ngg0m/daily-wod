@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DailyWodApplication {
+public class DailyWodApiApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DailyWodApplication.class, args);
+        SpringApplication.run(DailyWodApiApplication.class, args);
     }
 }
