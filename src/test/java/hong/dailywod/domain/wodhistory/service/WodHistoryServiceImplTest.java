@@ -24,17 +24,13 @@ import hong.dailywod.domain.wodhistory.repository.WodHistoryRepository;
 @Transactional
 class WodHistoryServiceImplTest {
 
-    @Autowired
-    WodHistoryService wodHistoryService;
+    @Autowired WodHistoryService wodHistoryService;
 
-    @Autowired
-    WodHistoryRepository wodHistoryRepository;
+    @Autowired WodHistoryRepository wodHistoryRepository;
 
-    @Autowired
-    WodRepository wodRepository;
+    @Autowired WodRepository wodRepository;
 
-    @Autowired
-    UserRepository userRepository;
+    @Autowired UserRepository userRepository;
 
     @Test
     void 와드_기록을_작성할_수_있다() {
@@ -72,27 +68,22 @@ class WodHistoryServiceImplTest {
         User savedUser = userRepository.persist(new User("hong"));
         Wod savedWod1 =
                 wodRepository.persist(
-                        new Wod(
-                                "Metcon",
-                                "Metcon WOD",
-                                WodType.METCON,
-                                LocalDate.now()));
+                        new Wod("Metcon", "Metcon WOD", WodType.METCON, LocalDate.now()));
 
         User otherUser = userRepository.persist(new User("other"));
         Wod savedWod2 =
                 wodRepository.persist(
-                        new Wod(
-                                "Cardio",
-                                "Cardio WOD",
-                                WodType.CARDIO,
-                                LocalDate.now()));
+                        new Wod("Cardio", "Cardio WOD", WodType.CARDIO, LocalDate.now()));
 
         wodHistoryRepository.persist(new WodHistory("기록1", savedWod1, savedUser));
         wodHistoryRepository.persist(new WodHistory("기록2", savedWod2, otherUser));
 
         // when
         List<WodHistoryResponseDto> responseDtoList =
-                wodHistoryService.getWodHistoriesByDateBetweenAndUserId(LocalDate.now().minusDays(1), LocalDate.now().plusDays(1), savedUser.getId());
+                wodHistoryService.getWodHistoriesByDateBetweenAndUserId(
+                        LocalDate.now().minusDays(1),
+                        LocalDate.now().plusDays(1),
+                        savedUser.getId());
 
         // then
         assertThat(responseDtoList.size()).isEqualTo(1);

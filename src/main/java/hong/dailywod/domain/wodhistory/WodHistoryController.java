@@ -38,6 +38,7 @@ public class WodHistoryController {
                             LocalDate endDate,
                     @RequestParam("userId") Long userId) {
         return ResponseFactory.ok(
-                wodHistoryService.getWodHistoriesByDateBetweenAndUserId(startDate, endDate, userId));
+                wodHistoryService.getWodHistoriesByDateBetweenAndUserId(
+                        startDate, endDate, userId));
     }
 }
