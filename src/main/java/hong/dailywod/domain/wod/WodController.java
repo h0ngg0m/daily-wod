@@ -19,24 +19,21 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/wods")
 public class WodController {
 
     private final WodService wodService;
 
-    @GetMapping("/daily")
+    @GetMapping("/api/v1/wods/daily")
     public ResponseEntity<ApiResult<DailyWodResponseDto>> getDailyWod() {
         return ResponseFactory.ok(wodService.getDailyWod());
     }
 
-    // TODO: 관리자만 사용?
-    @GetMapping("/{id}")
+    @GetMapping("/admin-api/v1/wods/{id}")
     public ResponseEntity<ApiResult<WodResponseDto>> getWodById(@PathVariable("id") Long id) {
         return ResponseFactory.ok(wodService.getWodById(id));
     }
 
-    // TODO: 관리자만 사용 가능하도록 권한 설정
-    @GetMapping("")
+    @GetMapping("/admin-api/v1/wods")
     public ResponseEntity<ApiResult<List<WodResponseDto>>> getWodsByDateBetween(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                     LocalDate startDate,
@@ -45,8 +42,7 @@ public class WodController {
         return ResponseFactory.ok(wodService.getWodsByDateBetween(startDate, endDate));
     }
 
-    // TODO: 관리자만 사용 가능하도록 권한 설정
-    @PostMapping("")
+    @PostMapping("/admin-api/v1/wods")
     public ResponseEntity<ApiResult<WodResponseDto>> createWod(
             @Valid @RequestBody WodCreateDto dto) {
         return ResponseFactory.ok(wodService.createWod(dto));

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import hong.dailywod.domain.role.model.Role;
 import hong.dailywod.domain.user.model.User;
 import hong.dailywod.domain.user.repository.UserRepository;
 import hong.dailywod.domain.wod.model.Wod;
@@ -35,7 +36,7 @@ class WodHistoryServiceImplTest {
     @Test
     void 와드_기록을_작성할_수_있다() {
         // given
-        User savedUser = userRepository.persist(new User("hong"));
+        User savedUser = userRepository.persist(new User("hong", Role.USER));
         Wod savedWod =
                 wodRepository.persist(
                         new Wod(
@@ -65,12 +66,12 @@ class WodHistoryServiceImplTest {
     @Test
     void 와드_기록들을_조회할_수_있다() {
         // given
-        User savedUser = userRepository.persist(new User("hong"));
+        User savedUser = userRepository.persist(new User("hong", Role.USER));
         Wod savedWod1 =
                 wodRepository.persist(
                         new Wod("Metcon", "Metcon WOD", WodType.METCON, LocalDate.now()));
 
-        User otherUser = userRepository.persist(new User("other"));
+        User otherUser = userRepository.persist(new User("other", Role.USER));
         Wod savedWod2 =
                 wodRepository.persist(
                         new Wod("Cardio", "Cardio WOD", WodType.CARDIO, LocalDate.now()));

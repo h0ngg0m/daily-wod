@@ -47,4 +47,26 @@ public class ResponseFactory {
         Assert.notNull(exceptionCode, "Parameter `exceptionCode` must not be null");
         return ResponseEntity.status(404).body(ApiResult.of(exceptionCode));
     }
+
+    public static ResponseEntity<ApiResult<?>> unauthorized(ExceptionCode exceptionCode) {
+        Assert.notNull(exceptionCode, "Parameter `exceptionCode` must not be null");
+        return ResponseEntity.status(401).body(ApiResult.of(exceptionCode));
+    }
+
+    public static ResponseEntity<ApiResult<?>> unauthorized(String code, String message) {
+        Assert.notNull(code, "Parameter `code` must not be null");
+        Assert.notNull(message, "Parameter `message` must not be null");
+        return ResponseEntity.status(401).body(ApiResult.of(code, message));
+    }
+
+    public static ResponseEntity<ApiResult<?>> forbidden(ExceptionCode exceptionCode) {
+        Assert.notNull(exceptionCode, "Parameter `exceptionCode` must not be null");
+        return ResponseEntity.status(403).body(ApiResult.of(exceptionCode));
+    }
+
+    public static ResponseEntity<ApiResult<?>> forbidden(String code, String message) {
+        Assert.notNull(code, "Parameter `code` must not be null");
+        Assert.notNull(message, "Parameter `message` must not be null");
+        return ResponseEntity.status(403).body(ApiResult.of(code, message));
+    }
 }

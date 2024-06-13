@@ -1,5 +1,7 @@
 package hong.dailywod.domain.auth.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,11 +13,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hong.dailywod.domain.auth.apiclient.GetGoogleAccessTokenClient;
 import hong.dailywod.domain.auth.apiclient.GetGoogleUserInfoClient;
 import hong.dailywod.domain.auth.dto.*;
-import hong.dailywod.domain.auth.jwt.JwtProvider;
+import hong.dailywod.domain.role.model.Role;
 import hong.dailywod.domain.user.model.User;
 import hong.dailywod.domain.user.repository.UserRepository;
+import hong.dailywod.global.exception.ExceptionCode;
+import hong.dailywod.global.exception.SystemException;
+import hong.dailywod.global.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -37,6 +44,9 @@ public class UserAuthServiceImpl implements UserAuthService {
 
     @Value("${auth.google.grant-type}")
     private String grantType;
+
+    @Value("${jwt.access-expiration}")
+    private Long accessExpiration;
 
     @Override
     public JwtResponseDto googleLogin(CodeDto dto) {
@@ -62,11 +72,22 @@ public class UserAuthServiceImpl implements UserAuthService {
                     userRepository
                             .findByEmail(userInfoDto.getEmail())
                             .orElseGet(
-                                    () -> userRepository.persist(new User(userInfoDto.getEmail())));
-
-            return new JwtResponseDto(jwtProvider.createAccessToken(user.getId(), user.getEmail()));
+                                    () ->
+                                            userRepository.persist(
+                                                    new User(userInfoDto.getEmail(), Role.USER)));
+            return new JwtResponseDto(
+                    jwtProvider.createAccessToken(
+                            Map.of(
+                                    "id",
+                                    user.getId().toString(),
+                                    "email",
+                                    user.getEmail(),
+                                    "role",
+                                    user.getRole().toString()),
+                            accessExpiration));
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e); // TODO: custom exception
+            log.warn(e.getMessage(), e);
+            throw new SystemException(ExceptionCode.SYSTEM_ERROR, e.getMessage());
         }
     }
 }

@@ -15,6 +15,8 @@ public enum ExceptionCode {
     FAIL_INVALID_REQUEST("F002", "올바르지 않은 요청"),
     FAIL_NOT_FOUND_DATA("F003", "존재하지 않는 데이터"),
     FAIL_DUPLICATED_DATA("F004", "중복되는 데이터"),
+    FAIL_UNAUTHORIZED("F005", "인증 되지 않은 사용자"),
+    FAIL_FORBIDDEN("F006", "권한이 없는 사용자"),
     FAIL_UNIQUE_CONSTRAINT_VIOLATED("F999", "이미 존재하는 데이터");
 
     private String code;

@@ -2,6 +2,7 @@ package hong.dailywod.domain.user.model;
 
 import jakarta.persistence.*;
 
+import hong.dailywod.domain.role.model.Role;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,11 @@ public class User {
 
     private String email;
 
-    public User(String email) {
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public User(String email, Role role) {
         this.email = email;
+        this.role = role;
     }
 }

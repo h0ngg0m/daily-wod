@@ -34,6 +34,12 @@ public class ControllerExceptionHandler {
     public ResponseEntity<ApiResult<?>> clientBadRequestException(
             final ClientBadRequestException e) {
         log.warn(e.getMessage(), e);
+        if (e.getCode().equals(ExceptionCode.FAIL_UNAUTHORIZED.getCode())) {
+            return ResponseFactory.unauthorized(e.getCode(), e.getMessage());
+        }
+        if (e.getCode().equals(ExceptionCode.FAIL_FORBIDDEN.getCode())) {
+            return ResponseFactory.forbidden(e.getCode(), e.getMessage());
+        }
         return ResponseFactory.badRequest(e.getCode(), e.getMessage());
     }
 
