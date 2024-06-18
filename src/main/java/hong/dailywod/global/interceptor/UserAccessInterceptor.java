@@ -21,8 +21,11 @@ public class UserAccessInterceptor implements HandlerInterceptor {
             throws Exception {
         String accessToken = request.getHeader("Authorization");
 
-        if (accessToken == null || !jwtProvider.isValidToken(accessToken)) {
+        if (accessToken == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return false;
+        } else if (!jwtProvider.isValidToken(accessToken)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return false;
         }
 

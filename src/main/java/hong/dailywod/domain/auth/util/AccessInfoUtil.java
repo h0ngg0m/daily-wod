@@ -1,6 +1,5 @@
 package hong.dailywod.domain.auth.util;
 
-import hong.dailywod.domain.wod.service.WodService;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Component;

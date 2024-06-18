@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class WebConfig implements WebMvcConfigurer {
 
     private final UserAccessInterceptor userAccessInterceptor;
+    private final AdminAccessInterceptor adminAccessInterceptor;
 
     // 사용자 api -> /api/~~
     // 관리자 api -> /admin-api/~~
@@ -27,7 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addPathPatterns("/api/**")
                 .excludePathPatterns(PUBLIC);
 
-        registry.addInterceptor(new AdminAccessInterceptor())
+        registry.addInterceptor(adminAccessInterceptor)
                 .addPathPatterns("/admin-api/**")
                 .excludePathPatterns(PUBLIC);
     }
