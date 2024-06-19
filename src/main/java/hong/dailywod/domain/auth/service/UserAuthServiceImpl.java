@@ -2,6 +2,7 @@ package hong.dailywod.domain.auth.service;
 
 import java.util.Map;
 
+import hong.dailywod.global.exception.ClientBadRequestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -75,6 +76,11 @@ public class UserAuthServiceImpl implements UserAuthService {
                                     () ->
                                             userRepository.persist(
                                                     new User(userInfoDto.getEmail(), Role.USER)));
+
+            if (!user.getRole().equals(Role.USER)) {
+                throw new ClientBadRequestException(ExceptionCode.FAIL_FORBIDDEN);
+            }
+
             return new JwtResponseDto(
                     jwtProvider.createAccessToken(
                             Map.of(

@@ -85,6 +85,11 @@ public class AdminAuthServiceImpl implements AdminAuthService {
                                     () ->
                                             userRepository.persist(
                                                     new User(userInfoDto.getEmail(), Role.ADMIN)));
+
+            if (!user.getRole().equals(Role.ADMIN)) {
+                throw new ClientBadRequestException(ExceptionCode.FAIL_FORBIDDEN);
+            }
+
             return new JwtResponseDto(
                     jwtProvider.createAccessToken(
                             Map.of(
