@@ -1,11 +1,8 @@
 package hong.dailywod.domain.wod;
 
-import java.time.LocalDate;
-import java.util.List;
-
 import jakarta.validation.Valid;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +10,7 @@ import hong.dailywod.domain.wod.dto.DailyWodResponseDto;
 import hong.dailywod.domain.wod.dto.WodCreateDto;
 import hong.dailywod.domain.wod.dto.WodResponseDto;
 import hong.dailywod.domain.wod.service.WodService;
+import hong.dailywod.global.request.Pagination;
 import hong.dailywod.global.response.ApiResult;
 import hong.dailywod.global.response.ResponseFactory;
 import lombok.RequiredArgsConstructor;
@@ -34,13 +32,24 @@ public class WodController {
     }
 
     @GetMapping("/admin-api/v1/wods")
-    public ResponseEntity<ApiResult<List<WodResponseDto>>> getWodsByDateBetween(
-            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                    LocalDate startDate,
-            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-                    LocalDate endDate) {
-        return ResponseFactory.ok(wodService.getWodsByDateBetween(startDate, endDate));
+    public ResponseEntity<ApiResult<Page<WodResponseDto>>> getWodsByPagination(
+            @RequestParam("page") int page,
+            @RequestParam("sortDesc") boolean sortDesc,
+            @RequestParam("sortBy") String sortBy,
+            @RequestParam("itemsPerPage") Integer itemsPerPage) {
+        return ResponseFactory.ok(
+                wodService.getWodsByPagination(
+                        Pagination.of(page, sortDesc, sortBy, itemsPerPage)));
     }
+
+    //    @GetMapping("/admin-api/v1/wods")
+    //    public ResponseEntity<ApiResult<List<WodResponseDto>>> getWodsByDateBetween(
+    //            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    //                    LocalDate startDate,
+    //            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    //                    LocalDate endDate) {
+    //        return ResponseFactory.ok(wodService.getWodsByDateBetween(startDate, endDate));
+    //    }
 
     @PostMapping("/admin-api/v1/wods")
     public ResponseEntity<ApiResult<WodResponseDto>> createWod(

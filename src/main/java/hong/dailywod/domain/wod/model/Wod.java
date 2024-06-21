@@ -27,16 +27,16 @@ public class Wod {
 
     private LocalDate wodDate;
 
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
-    private LocalDateTime updatedDate;
+    private LocalDateTime updatedAt;
 
     public Wod(String title, String content, WodType type, LocalDate wodDate) {
         this.title = title;
         this.content = content;
         this.type = type;
         this.wodDate = wodDate;
-        this.createdDate = LocalDateTime.now();
-        this.updatedDate = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 }

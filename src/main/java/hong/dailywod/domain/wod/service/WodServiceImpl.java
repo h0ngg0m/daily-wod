@@ -3,6 +3,7 @@ package hong.dailywod.domain.wod.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import hong.dailywod.domain.wod.repository.WodRepository;
 import hong.dailywod.global.exception.ClientBadRequestException;
 import hong.dailywod.global.exception.ExceptionCode;
 import hong.dailywod.global.exception.SystemException;
+import hong.dailywod.global.request.Pagination;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -86,5 +88,12 @@ public class WodServiceImpl implements WodService {
                                             + dto.getType());
                         });
         return new WodResponseDto(wodRepository.persist(dto.toEntity()));
+    }
+
+    @Override
+    public Page<WodResponseDto> getWodsByPagination(Pagination pagination) {
+        return wodRepository
+                .findAllByPagination(pagination.getPageRequest())
+                .map(WodResponseDto::new);
     }
 }

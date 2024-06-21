@@ -18,8 +18,8 @@ public class WodResponseDto {
     private String content;
     private WodType type;
     private LocalDate wodDate;
-    private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public WodResponseDto(Wod wod) {
         this.id = wod.getId();
@@ -27,7 +27,7 @@ public class WodResponseDto {
         this.content = wod.getContent();
         this.type = wod.getType();
         this.wodDate = wod.getWodDate();
-        this.createdDate = wod.getCreatedDate();
-        this.updatedDate = wod.getUpdatedDate();
+        this.createdAt = wod.getCreatedAt();
+        this.updatedAt = wod.getUpdatedAt();
     }
 }

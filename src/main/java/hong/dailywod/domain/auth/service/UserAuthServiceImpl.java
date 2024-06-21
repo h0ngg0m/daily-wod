@@ -2,7 +2,6 @@ package hong.dailywod.domain.auth.service;
 
 import java.util.Map;
 
-import hong.dailywod.global.exception.ClientBadRequestException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,7 @@ import hong.dailywod.domain.auth.dto.*;
 import hong.dailywod.domain.role.model.Role;
 import hong.dailywod.domain.user.model.User;
 import hong.dailywod.domain.user.repository.UserRepository;
+import hong.dailywod.global.exception.ClientBadRequestException;
 import hong.dailywod.global.exception.ExceptionCode;
 import hong.dailywod.global.exception.SystemException;
 import hong.dailywod.global.jwt.JwtProvider;

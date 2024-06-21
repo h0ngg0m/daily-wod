@@ -1,7 +1,6 @@
 package hong.dailywod.domain.auth;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,11 +28,5 @@ public class AuthController {
     @PostMapping("/admin-api/v1/auth/login/google")
     public ResponseEntity<ApiResult<JwtResponseDto>> adminGoogleLogin(@RequestBody CodeDto dto) {
         return ResponseFactory.ok(adminAuthService.googleLogin(dto));
-    }
-
-    @GetMapping("/admin-api/v1/test")
-    public ResponseEntity<ApiResult<?>> adminTest() {
-        System.out.println("AuthController.adminTest");
-        return ResponseFactory.ok();
     }
 }

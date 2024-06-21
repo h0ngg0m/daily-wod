@@ -20,7 +20,8 @@ public class WebConfig implements WebMvcConfigurer {
 
     // 사용자 api -> /api/~~
     // 관리자 api -> /admin-api/~~
-    private static final List<String> PUBLIC = List.of("/api/v1/auth/**", "/admin-api/v1/auth/**");
+    private static final List<String> PUBLIC =
+            List.of("/api/v1/auth/**", "/api/v1/wods/daily", "/admin-api/v1/auth/**");
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -38,7 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:8081", "http://localhost:8082")
                 .allowedMethods("*")
-                .allowedHeaders("Authorization", "Content-Type")
+                .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(3600);
     }
