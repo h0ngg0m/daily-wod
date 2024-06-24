@@ -47,8 +47,8 @@ class WodServiceImplTest {
                 .isEqualTo("5 Rounds for time: 10 Pull-ups, 20 Push-ups, 30 Air Squats");
         assertThat(responseDto.getType()).isEqualTo(WodType.METCON);
         assertThat(responseDto.getWodDate()).isEqualTo(LocalDate.of(2021, 8, 12));
-        assertThat(responseDto.getCreatedDate()).isNotNull();
-        assertThat(responseDto.getUpdatedDate()).isNotNull();
+        assertThat(responseDto.getCreatedAt()).isNotNull();
+        assertThat(responseDto.getUpdatedAt()).isNotNull();
     }
 
     @Test
@@ -130,15 +130,15 @@ class WodServiceImplTest {
                 .isEqualTo("5 Rounds for time: 10 Pull-ups, 20 Push-ups, 30 Air Squats");
         assertThat(metcon.getType()).isEqualTo(WodType.METCON);
         assertThat(metcon.getWodDate()).isEqualTo(LocalDate.now());
-        assertThat(metcon.getCreatedDate()).isNotNull();
-        assertThat(metcon.getUpdatedDate()).isNotNull();
+        assertThat(metcon.getCreatedAt()).isNotNull();
+        assertThat(metcon.getUpdatedAt()).isNotNull();
 
         assertThat(cardio.getTitle()).isEqualTo("CARDIO WOD");
         assertThat(cardio.getContent()).isEqualTo("Run 5km");
         assertThat(cardio.getType()).isEqualTo(WodType.CARDIO);
         assertThat(cardio.getWodDate()).isEqualTo(LocalDate.now());
-        assertThat(cardio.getCreatedDate()).isNotNull();
-        assertThat(cardio.getUpdatedDate()).isNotNull();
+        assertThat(cardio.getCreatedAt()).isNotNull();
+        assertThat(cardio.getUpdatedAt()).isNotNull();
     }
 
     @Test
