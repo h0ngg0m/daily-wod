@@ -22,6 +22,10 @@ public class ResponseFactory {
         return ResponseEntity.status(200).body(ApiResult.of(ExceptionCode.SUCCESS, data));
     }
 
+    public static ResponseEntity<ApiResult<?>> noContent() {
+        return ResponseEntity.status(204).body(ApiResult.of(ExceptionCode.SUCCESS));
+    }
+
     public static ResponseEntity<ApiResult<?>> ok(String code, String message) {
         Assert.notNull(code, "Parameter `code` must not be null");
         Assert.notNull(message, "Parameter `message` must not be null");

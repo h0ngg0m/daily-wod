@@ -57,5 +57,12 @@ public class WodController {
         return ResponseFactory.ok(wodService.createWod(dto));
     }
 
+    @DeleteMapping("/admin-api/v1/wods/{id}")
+    public ResponseEntity<ApiResult<?>> deleteWod(@PathVariable("id") Long id) {
+        wodService.deleteWod(id);
+        return ResponseFactory.noContent();
+    }
+
+
     // 사용자용 와드 기록 조회 api (날짜로)
 }

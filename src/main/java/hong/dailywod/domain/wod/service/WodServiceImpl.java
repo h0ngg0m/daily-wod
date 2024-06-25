@@ -96,4 +96,9 @@ public class WodServiceImpl implements WodService {
                 .findAllByPagination(pagination.getPageRequest())
                 .map(WodResponseDto::new);
     }
+
+    @Override
+    public void deleteWod(Long id) {
+        wodRepository.deleteById(id);
+    }
 }

@@ -21,4 +21,6 @@ public interface WodService {
     WodResponseDto createWod(WodCreateDto dto);
 
     Page<WodResponseDto> getWodsByPagination(Pagination pagination);
+
+    void deleteWod(Long id);
 }

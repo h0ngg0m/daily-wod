@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WodCreateDto {
 
-    private String title;
+    @NotBlank private String title;
 
     @NotBlank private String content;
 
